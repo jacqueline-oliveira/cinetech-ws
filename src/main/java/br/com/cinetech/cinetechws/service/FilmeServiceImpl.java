@@ -47,5 +47,11 @@ public class FilmeServiceImpl implements FilmeService {
 
         return Optional.empty();
     }
+
+    @Override
+    public void excluirFilmePorId(String id) {
+        repo.deleteById(id);
+        
+    }
     
 }

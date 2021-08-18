@@ -3,7 +3,12 @@ package br.com.cinetech.cinetechws.view.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,24 +27,31 @@ public class FilmeController {
     FilmeService servico; 
 
     @GetMapping
-    public List<FilmeDto> listarFilmes(){
-        return servico.listarFilmes();
+    public ResponseEntity<List<FilmeDto>> listarFilmes(){
+        return new ResponseEntity<>(servico.listarFilmes(), HttpStatus.OK);
     }
 
     @PostMapping
-    public FilmeDto criarFilme(@RequestBody FilmeDto filme) {
-        return servico.criarFilme(filme);
+    public ResponseEntity<FilmeDto> criarFilme(@RequestBody @Valid FilmeDto filme) {
+        return new ResponseEntity<>(servico.criarFilme(filme), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public FilmeDto atualizarFilme(@PathVariable String id, @RequestBody FilmeDto filme) {
+    public ResponseEntity<FilmeDto> mudarFilme(@PathVariable String id, @RequestBody @Valid FilmeDto filme) {
         Optional<FilmeDto> filmeParaAtualizar = servico.atualizarFilme(id, filme);
 
         if (filmeParaAtualizar.isPresent()) {
-            return filmeParaAtualizar;
+            return new ResponseEntity<>(filmeParaAtualizar.get(), HttpStatus.ACCEPTED);
         }
 
+        return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
 
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> excluirFilme(@PathVariable String id) {
+        servico.excluirFilmePorId(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     

@@ -1,10 +1,15 @@
 package br.com.cinetech.cinetechws.shared;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+
 public class FilmeDto {
     private String id;
+    @NotBlank(message = "O nome não pode estar vazio")
     private String nome;
     private String genero;
     private String diretor;
+    @Positive(message = "O ano de lançamento deve ser informado")
     private Integer ano;
     
     public String getId() {

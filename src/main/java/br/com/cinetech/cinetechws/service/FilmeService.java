@@ -9,4 +9,6 @@ public interface FilmeService {
     List<FilmeDto> listarFilmes();
     FilmeDto criarFilme(FilmeDto filme);
     Optional<FilmeDto> atualizarFilme(String id, FilmeDto filme);
+    void excluirFilmePorId(String id);
+
 }
